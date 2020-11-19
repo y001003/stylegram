@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper   
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="kr.spring.maincomment.dao.MainCommentMapper">
+	
+	<select id="commentCount" resultType="integer">
+		SELECT COUNT(*) FROM promainreply WHERE mb_num=#{mb_num}
+	</select>
+	
+	<select id="commentList" resultType="mainCommentVO">
+		SELECT * FROM
+		(select a.*, rownum rnum FROM (SELECT * FROM promainreply c Join PROMEMBER m on c.m_num=m.m_num JOIN promember_detail d ON c.m_num=d.m_num and mb_num=#{mb_num} ORDER BY c.mr_num) a)
+		<![CDATA[ WHERE rnum >= #{start} AND rnum <= #{end} ]]>
+	</select>
+	
+	
+	<select id="commentSelect" resultType="mainCommentVO">
+		SELECT * FROM promainreply WHERE mr_num=#{mr_num}
+	</select>
+	
+	<insert id="commentInsert" parameterType="mainCommentVO">
+		INSERT INTO promainreply (mr_num,mb_num,m_num,mr_content,mr_regdate)
+		VALUES(promainreply_seq.nextval,#{mb_num},#{m_num},#{mr_content},SYSDATE)
+	</insert>
+	
+	<update id="commentUpdate" parameterType="mainCommentVO">
+		UPDATE promainreply SET mr_content = #{mr_content} WHERE mr_num=#{mr_num}
+	</update>
+	
+	
+	<delete id="commentDelete" parameterType="integer">
+		DELETE FROM promainreply WHERE mr_num=#{mr_num}
+	</delete>
+	
+</mapper>  

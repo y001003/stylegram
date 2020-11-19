@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"
+       "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+<tiles-definitions>
+    <definition name="main" template="/WEB-INF/views/template/layout.jsp">
+       <put-attribute name="title" value="STYLEGRAM"/> 
+       <put-attribute name="header" value="/WEB-INF/views/template/header.jsp"/>
+       <put-attribute name="menu" value="/WEB-INF/views/template/menu.jsp"/>
+       <put-attribute name="body" value="/WEB-INF/views/main/main.jsp"/>
+       <put-attribute name="reply"/>
+    </definition>
+    <definition name="reply_main" template="/WEB-INF/views/template/reply.jsp">
+    	<put-attribute name="reply" value="/WEB-INF/views/mainBoard/mainReplayList.jsp"/>
+    </definition>
+</tiles-definitions>

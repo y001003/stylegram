@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper   
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="kr.spring.member.dao.MemberMapper">
+	<update id="update" parameterType="memberVO">
+		UPDATE promember_detail SET
+		<if test="m_filename != ''">
+			m_image=#{m_image}, m_filename=#{m_filename},
+		</if>
+		m_postcode=#{m_postcode}, m_address=#{m_address}, m_detailaddress=#{m_detailaddress}, m_public=#{m_public} WHERE m_num=#{m_num}
+	</update>
+	
+	<select id="selectList" parameterType="map" resultType="memberVO">
+		SELECT * FROM (SELECT a.*, rownum rnum FROM
+		(SELECT * FROM promember_detail d JOIN promember m ON d.m_num = m.m_num) a
+		)<![CDATA[ WHERE rnum >= #{start} AND rnum <= #{end} ]]>
+	</select>
+	
+	<select id="selectBoardList" parameterType="map" resultType="mainBoardVO">
+		SELECT * FROM promainboard WHERE m_num = #{m_num}
+	</select>
+	
+	<select id="selectMemberCount" parameterType="map" resultType="integer">
+		SELECT COUNT(*) FROM promember m JOIN promember_detail d ON m.m_num = d.m_num
+		ORDER BY m.m_num ASC
+	</select>
+	
+	<select id="selectFollower" parameterType="map" resultType="memberVO">
+		SELECT * FROM
+		(SELECT f.f_passiveuser FROM promember m JOIN promember_detail d ON m.m_num = d.m_num JOIN profollow f ON m.m_num = f.f_activeuser WHERE f.f_activeuser = #{f_activeuser}) p
+		JOIN promember m ON m.m_num = p.f_passiveuser JOIN promember_detail d ON m.m_num = d.m_num
+	</select>
+	
+	<select id="selectFollowing" parameterType="map" resultType="memberVO">
+		SELECT * FROM
+		(SELECT f.f_activeuser FROM promember m JOIN promember_detail d ON m.m_num = d.m_num JOIN profollow f ON m.m_num = f.f_activeuser WHERE f.f_passiveuser = #{f_passiveuser}) a
+		JOIN promember m ON m.m_num = a.f_activeuser JOIN promember_detail d ON m.m_num = d.m_num
+	</select>
+</mapper>

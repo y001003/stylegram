@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"
+       "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+
+<tiles-definitions>
+    <definition name="insertStore" extends="main">
+       <put-attribute name="title" value="상품 입력"/> 
+       <put-attribute name="body" value="/WEB-INF/views/store/insertStore.jsp"/>
+    </definition>
+    <definition name="storeDetail" extends="main">
+       <put-attribute name="title" value="스토어 메인"/> 
+       <put-attribute name="body" value="/WEB-INF/views/store/storeDetail.jsp"/>
+    </definition>
+    <definition name="storeBasket" extends="main">
+       <put-attribute name="title" value="스토어 메인"/> 
+       <put-attribute name="body" value="/WEB-INF/views/store/storeBasket.jsp"/>
+    </definition>
+    <definition name="productDetail" extends="main">
+       <put-attribute name="title" value="상품 상세"/> 
+       <put-attribute name="body" value="/WEB-INF/views/store/productDetail.jsp"/>
+    </definition>
+    <definition name="productModify" extends="main">
+       <put-attribute name="title" value="상품 수정"/> 
+       <put-attribute name="body" value="/WEB-INF/views/store/storemodify.jsp"/>
+    </definition>
+    <definition name="productReview" extends="reply_main">
+       <put-attribute name="reply" value="/WEB-INF/views/store/productReview.jsp"/>
+    </definition>
+    <definition name="purchaseMain" extends="main">
+       <put-attribute name="body" value="/WEB-INF/views/store/purchaseMain.jsp"/>
+    </definition>
+    <definition name="purchaseSuccess" extends="main">
+       <put-attribute name="body" value="/WEB-INF/views/store/purchaseSuccess.jsp"/>
+    </definition>
+    <definition name="purchaseList" extends="main">
+       <put-attribute name="body" value="/WEB-INF/views/store/purchaseList.jsp"/>
+    </definition>
+     <definition name="basketPurchaseMain" extends="main">
+       <put-attribute name="body" value="/WEB-INF/views/store/basketPurchaseMain.jsp"/>
+    </definition>
+     <definition name="basketPurchaseSuccess" extends="main">
+       <put-attribute name="body" value="/WEB-INF/views/store/basketPurchaseSuccess.jsp"/>
+    </definition>
+</tiles-definitions>

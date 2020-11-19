@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper   
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="kr.spring.qna.dao.QnaCommentMapper">
+	
+	<select id="commentCount" resultType="integer">
+		SELECT COUNT(*) FROM proqnareple WHERE qb_num=#{qb_num}
+	</select>
+	
+	<select id="commentList" resultType="qnaCommentVO">
+		SELECT * FROM
+		(select a.*, rownum rnum FROM (SELECT * FROM proqnareple c JOIN promember m on c.m_num=m.m_num JOIN promember_detail d ON c.m_num=d.m_num and qb_num=#{qb_num} ORDER BY c.qr_num) a)
+		<![CDATA[ WHERE rnum >= #{start} AND rnum <= #{end} ]]>
+	</select>
+	
+	
+	<select id="commentSelect" resultType="qnaCommentVO">
+		SELECT * FROM proqnareple WHERE qr_num=#{qr_num}
+	</select>
+	
+	<insert id="commentInsert" parameterType="qnaCommentVO">
+		INSERT INTO proqnareple (qr_num,qb_num,m_num,qr_content,qr_regdate)
+		VALUES(proqnareple_seq.nextval,#{qb_num},#{m_num},#{qr_content},SYSDATE)
+	</insert>
+	
+	<update id="commentUpdate" parameterType="qnaCommentVO">
+		UPDATE proqnareple SET qr_content = #{qr_content} WHERE qr_num=#{qr_num}
+	</update>
+	
+	
+	<delete id="commentDelete" parameterType="integer">
+		DELETE FROM proqnareple WHERE qr_num=#{qr_num}
+	</delete>
+	
+</mapper>  

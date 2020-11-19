@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"
+       "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+
+<tiles-definitions>
+    <definition name="registerForm" extends="main">
+       <put-attribute name="title" value="회원가입"/> 
+       <put-attribute name="body" value="/WEB-INF/views/member/registerForm.jsp"/>
+    </definition>
+    <definition name="loginForm" extends="main">
+       <put-attribute name="title" value="회원로그인"/> 
+       <put-attribute name="body" value="/WEB-INF/views/member/loginForm.jsp"/>
+    </definition>
+    <definition name="authForm" extends="main">
+       <put-attribute name="title" value="본인인증"/> 
+       <put-attribute name="body" value="/WEB-INF/views/member/authForm.jsp"/>
+    </definition>
+    <definition name="detailForm" extends="main">
+       <put-attribute name="title" value="마이페이지"/> 
+       <put-attribute name="body" value="/WEB-INF/views/member/detailForm.jsp"/>
+    </definition>
+    <definition name="updateForm" extends="main">
+       <put-attribute name="title" value="회원정보수정"/> 
+       <put-attribute name="body" value="/WEB-INF/views/member/updateForm.jsp"/>
+    </definition>
+    <definition name="changepwdForm" extends="main">
+       <put-attribute name="title" value="비밀번호변경"/> 
+       <put-attribute name="body" value="/WEB-INF/views/member/changepwdForm.jsp"/>
+    </definition>
+    <definition name="deleteForm" extends="main">
+       <put-attribute name="title" value="회원탈퇴"/> 
+       <put-attribute name="body" value="/WEB-INF/views/member/deleteForm.jsp"/>
+    </definition>
+    <definition name="adminForm" extends="main">
+       <put-attribute name="title" value="관리자페이지"/> 
+       <put-attribute name="body" value="/WEB-INF/views/member/adminForm.jsp"/>
+    </definition>
+    <definition name="anotherForm" extends="main">
+       <put-attribute name="title" value="개인페이지"/> 
+       <put-attribute name="body" value="/WEB-INF/views/member/anotherDetailForm.jsp"/>
+    </definition>
+    <definition name="manageForm" extends="main">
+       <put-attribute name="title" value="회원목록"/> 
+       <put-attribute name="body" value="/WEB-INF/views/member/manageForm.jsp"/>
+    </definition>
+    <definition name="manageDetailForm" extends="main">
+       <put-attribute name="title" value="회원상세정보"/> 
+       <put-attribute name="body" value="/WEB-INF/views/member/manageDetailForm.jsp"/>
+    </definition>
+</tiles-definitions>

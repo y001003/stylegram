@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper   
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="kr.spring.mainboard.dao.MainBoardMapper">  
+	<insert id="insert" parameterType="mainBoardVO">
+		INSERT INTO promainboard
+		(mb_num,mb_title,m_num,mb_photo,mb_filename,mb_content,mb_regdate)
+		VALUES(#{mb_num},#{mb_title},#{m_num},#{mb_photo},#{mb_filename},#{mb_content},SYSDATE)
+	</insert>
+	
+	<select id="selectBoard" resultType="mainBoardVO">
+		SELECT * FROM (SELECT * FROM promainboard b JOIN promember m ON b.m_num = m.m_num JOIN promember_detail d ON b.m_num = d.m_num where mb_num = #{mb_num}) a JOIN promaininfo i ON a.mb_num = i.mb_num
+	</select>
+	
+	<update id="update" parameterType="mainBoardVO">
+		UPDATE promainboard SET
+			<if test="mb_filename != ''">
+				mb_photo=#{mb_photo},mb_filename=#{mb_filename},
+			</if>
+		 mb_title=#{mb_title},mb_content=#{mb_content},mb_modifydate=SYSDATE
+		 WHERE mb_num = #{mb_num}
+	</update>
+	
+	<delete id="delete" parameterType="integer">
+		DELETE FROM promainboard WHERE mb_num = #{mb_num}
+	</delete>
+	
+	<select id="selectRowCount" parameterType="map" resultType="integer">
+		SELECT COUNT(*) FROM promainboard b JOIN promember m ON b.m_num=m.m_num JOIN promaininfo i ON b.mb_num = i.mb_num
+		<where>
+			<if test="keyword != '' and keyfield == 'title'">
+				b.mb_title LIKE '%' || #{keyword} || '%'
+			</if>
+			<if test="keyword != '' and keyfield == 'id'">
+				m.m_id LIKE '%' || #{keyword} || '%'
+			</if>
+			<if test="keyword != '' and keyfield == 'content'">
+				b.mb_content LIKE '%' || #{keyword} || '%'
+			</if>
+			<if test="filter != '' and keyword != ''">
+				and
+			</if>			
+			<if test="filter == 'top'">
+				mb_topinfo IS NOT NULL
+			</if>
+			<if test="filter == 'pants'">
+				mb_pantsinfo IS NOT NULL
+			</if>
+			<if test="filter == 'cap'">
+				mb_capinfo IS NOT NULL
+			</if>
+			<if test="filter == 'shoes'">
+				mb_shoesinfo IS NOT NULL
+			</if>
+		</where>
+	</select>
+	
+	<select id="selectList" parameterType="map" resultType="mainBoardVO">
+		SELECT * FROM (SELECT a.*, rownum rnum FROM
+		(SELECT * FROM promainboard b JOIN promember m ON b.m_num=m.m_num JOIN promaininfo i ON b.mb_num = i.mb_num
+		<where>
+			<if test="keyword != '' and keyfield == 'mb_title'">
+				b.mb_title LIKE '%' || #{keyword} || '%'
+			</if>
+			<if test="keyword != '' and keyfield == 'm_id'">
+				m.m_id LIKE '%' || #{keyword} || '%'
+			</if>
+			<if test="keyword != '' and keyfield == 'mb_content'">
+				b.mb_content LIKE '%' || #{keyword} || '%'
+			</if>
+			<if test="filter != '' and keyword != ''">
+				and
+			</if>			
+			<if test="filter == 'top'">
+				mb_topinfo IS NOT NULL
+			</if>
+			<if test="filter == 'pants'">
+				mb_pantsinfo IS NOT NULL
+			</if>
+			<if test="filter == 'cap'">
+				mb_capinfo IS NOT NULL
+			</if>
+			<if test="filter == 'shoes'">
+				mb_shoesinfo IS NOT NULL
+			</if>
+		</where>
+		ORDER BY b.mb_num DESC) a
+		)<![CDATA[ WHERE rnum >= #{start} AND rnum <= #{end} ]]>
+		
+	</select>
+</mapper>

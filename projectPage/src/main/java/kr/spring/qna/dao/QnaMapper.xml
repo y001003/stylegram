@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper   
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="kr.spring.qna.dao.QnaMapper">  
+	<!-- 글쓰기 -->
+	<insert id="writeQna" parameterType="qnaVO">
+		INSERT INTO proqnaboard
+		(qb_num,qb_title,qb_usernum,qb_photo,qb_filename,qb_content,qb_regdate)
+		VALUES(#{qb_num},#{qb_title},#{qb_usernum},#{qb_photo},#{qb_filename},#{qb_content},SYSDATE)
+	</insert>
+	<!-- 글상세 -->
+	<select id="selectQna" resultType="qnaVO">
+		SELECT * FROM proqnaboard b 
+		JOIN promember m ON b.qb_usernum = m.m_num JOIN promember_detail d ON b.qb_usernum=d.m_num JOIN proqnainfo i ON b.qb_num = i.qb_num
+		WHERE b.qb_num = #{qb_num}
+	</select>
+	<!-- 글수정 -->
+	<update id="modifyQna" parameterType="qnaVO">
+		UPDATE proqnaboard SET
+		<if test="qb_filename != ''">
+			qb_photo=#{qb_photo},
+			qb_filename=#{qb_filename},
+		</if>
+		 qb_title=#{qb_title},qb_content=#{qb_content},qb_modifydate=SYSDATE
+		 WHERE qb_num=#{qb_num}
+	</update>
+
+	<select id="selectRowCount" parameterType="map" resultType="integer">
+		SELECT COUNT(*) FROM proqnaboard b JOIN promember m ON b.qb_usernum=m.m_num
+		<where>
+			<if test="keyword != '' and keyfield == 'qb_title'">
+				b.qb_title LIKE '%' || #{keyword} || '%'
+			</if>
+			<if test="keyword != '' and keyfield == 'm_id'">
+				m.m_id LIKE '%' || #{keyword} || '%'
+			</if>
+			<if test="keyword != '' and keyfield == 'qb_contnet'">
+				b.qb_content LIKE '%' #{keyword} || '%'
+			</if>
+		</where>	
+	</select>
+	
+	<!-- 글목록 -->
+	<select id="listQna" parameterType="map" resultType="qnaVO">
+	SELECT * FROM (SELECT a.*, rownum rnum FROM
+	(SELECT * FROM proqnaboard b JOIN proqnainfo i ON b.qb_num = i.qb_num JOIN promember m ON b.qb_usernum=m.m_num JOIN promember_detail d ON m.m_num = d.m_num
+	<where>
+		<if test="keyword != '' and keyfield == 'qb_title'">
+			b.qb_title LIKE '%' || #{keyword} || '%'
+		</if>
+		<if test="keyword != '' and keyfield == 'm_id'">
+			m.m_id LIKE '%' || #{keyword} || '%'
+		</if>
+		<if test="keyword != '' and keyfield == 'qb_content'">
+			b.qb_content LIKE '%' || #{keyword} || '%'
+		</if>
+		<if test="keyword != '' and keyfield == 'm_nickname'">
+			m.m_nickname LIKE '%' || #{keyword} || '%'
+		</if>
+		<if test="filter != '' and keyword != ''">
+			and
+		</if>
+		<if test="filter == 'top'">
+			qb_topinfo=1
+		</if>
+		<if test="filter == 'bottom'">
+			qb_pantsinfo=1
+		</if>
+		<if test="filter == 'hat'">
+			qb_capinfo=1
+		</if>
+		<if test="filter == 'shoes'">
+			qb_shoesinfo=1
+		</if>			
+	</where>
+	ORDER BY b.qb_num DESC) a
+	)<![CDATA[ WHERE rnum >= #{start} AND rnum <=#{end}]]>
+	</select>	
+	
+	<!-- 글삭제 -->
+	<delete id="deleteQna" parameterType="integer">
+		DELETE FROM proqnaboard WHERE qb_num = #{qb_num}
+	</delete>
+	
+	
+</mapper>
+

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="kr.spring.flea.dao.FleaMapper">
+	<select id="selectRowCount" parameterType="map" resultType="integer">
+		SELECT COUNT(*)
+			FROM profleaboard b JOIN profleainfo i ON b.fb_num=i.fb_num JOIN promember m ON b.fb_usernum=m.m_num
+			<where>
+				<if test="keyword != '' and keyfield == 'title'">
+					b.fb_title LIKE '%' || #{keyword} || '%'
+				</if>
+				<if test="keyword != '' and keyfield == 'id'">
+					m.m_id LIKE '%' || #{keyword} || '%'
+				</if>
+				<if test="keyword != '' and keyfield == 'content'">
+					b.fb_content LIKE '%' || #{keyword} || '%'
+				</if>
+				<if test="keyword != '' and keyfield == 'nickname'">
+					m.m_nickname LIKE '%' || #{keyword} || '%'
+				</if>
+				<if test="filter != '' and keyword != ''">
+					and
+				</if>
+				<if test="filter == 'top'">
+					fb_topcheck=1
+				</if>
+				<if test="filter == 'bottom'">
+					fb_bottomcheck=1
+				</if>
+				<if test="filter == 'hat'">
+					fb_hatcheck=1
+				</if>
+				<if test="filter == 'shoes'">
+					fb_shoescheck=1
+				</if>
+			</where>
+	</select>
+	<select id="selectList" parameterType="map" resultType="fleaVO">
+		SELECT *
+			FROM (SELECT rownum, a.*, rownum rnum 
+				FROM (SELECT * 
+					FROM profleaboard b JOIN profleainfo i ON b.fb_num=i.fb_num JOIN promember m ON b.fb_usernum=m.m_num JOIN promember_detail d ON m.m_num = d.m_num  
+					<where>
+						<if test="keyword != '' and keyfield == 'title'">
+							b.fb_title LIKE '%' || #{keyword} || '%'
+							</if>
+						<if test="keyword != '' and keyfield == 'id'">
+							m.m_id LIKE '%' || #{keyword} || '%'
+						</if>
+						<if test="keyword != '' and keyfield == 'content'">
+							b.fb_content LIKE '%' || #{keyword} || '%'
+						</if>
+						<if test="filter != '' and keyword != ''">
+							and
+						</if>
+						<if test="filter == 'top'">
+							fb_topcheck=1
+						</if>
+						<if test="filter == 'bottom'">
+							fb_bottomcheck=1
+						</if>
+						<if test="filter == 'hat'">
+							fb_hatcheck=1
+						</if>
+						<if test="filter == 'shoes'">
+							fb_shoescheck=1
+						</if>
+					</where>
+				 ORDER BY b.fb_num DESC)a)
+				 <![CDATA[ WHERE rnum >= #{start} AND rnum <= #{end} ]]>
+	</select>
+	<update id="update" parameterType="fleaVO">
+		UPDATE profleaboard SET 
+			fb_title=#{fb_title},
+		<if test="fb_filename != ''">
+			fb_photo=#{fb_photo},
+			fb_filename=#{fb_filename},
+		</if>
+			fb_price=#{fb_price},
+			fb_content=#{fb_content},
+			fb_modifydate=sysdate
+		 WHERE fb_num=#{fb_num}
+	</update>
+</mapper>

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper   
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="kr.spring.notice.dao.NoticeMapper">  
+	<select id="selectRowCount" parameterType="map"
+	                      resultType="integer">
+		SELECT
+		   COUNT(*)
+		FROM pronotice b JOIN promember m
+		ON b.m_num=m.m_num
+		<where>
+			<if test="keyword != '' and keyfield == 'title'">
+				b.title LIKE '%' || #{keyword} || '%'
+			</if>
+			<if test="keyword != '' and keyfield == 'id'">
+				m.id LIKE '%' || #{keyword} || '%'
+			</if>
+			<if test="keyword != '' and keyfield == 'content'">
+				b.content LIKE '%' || #{keyword} || '%'
+			</if>
+		</where>                      
+	</select>
+	<select id="selectList" parameterType="map"
+	                    resultType="noticeVO">
+		SELECT
+		   *
+		FROM (SELECT
+		         a.*,
+		         rownum rnum
+		      FROM (SELECT
+		               *
+		            FROM pronotice b JOIN promember m 
+		            ON b.m_num = m.m_num
+		            <where>
+						<if test="keyword != '' and keyfield == 'nb_title'">
+							b.nb_title LIKE '%' || #{keyword} || '%'
+						</if>
+						<if test="keyword != '' and keyfield == 'id'">
+							m.m_id LIKE '%' || #{keyword} || '%'
+						</if>
+						<if test="keyword != '' and keyfield == 'nb_content'">
+							b.nb_content LIKE '%' || #{keyword} || '%'
+						</if>
+					</where> 
+		            ORDER BY b.nb_num DESC)a) 
+		<![CDATA[
+		WHERE rnum >= #{start} AND rnum <= #{end}
+		]]>            
+	</select>
+	
+	<update id="update" parameterType="noticeVO">
+		UPDATE pronotice SET
+		<if test="nb_filename1 != ''">
+			nb_file1=#{nb_file1},
+			nb_filename1=#{nb_filename1},
+		</if>
+		<if test="nb_filename2 != ''">
+			nb_file2=#{nb_file2},
+			nb_filename2=#{nb_filename2},
+		</if>
+			nb_title=#{nb_title},
+			nb_content=#{nb_content},
+			nb_regdate=SYSDATE
+		WHERE nb_num=#{nb_num}
+	</update>
+	
+</mapper>

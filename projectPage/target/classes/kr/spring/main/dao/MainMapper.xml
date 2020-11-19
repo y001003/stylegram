@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper   
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="kr.spring.main.dao.MainMapper">  
+	<select id="selectList" parameterType="map" resultType="mainVO">
+		SELECT * FROM (SELECT a.*, rownum rnum FROM
+		(SELECT * FROM promainboard b JOIN promember m ON b.m_num = m.m_num JOIN promember_detail d ON m.m_num = d.m_num JOIN promaininfo i ON b.mb_num = i.mb_num
+		<where>
+			<if test="keyword != '' and keyfield == 'title'">
+				b.mb_title LIKE '%' || #{keyword} || '%'
+			</if>
+			<if test="keyword != '' and keyfield == 'id'">
+				m.m_id LIKE '%' || #{keyword} || '%'
+			</if>
+			<if test="keyword != '' and keyfield == 'content'">
+				b.mb_content LIKE '%' || #{keyword} || '%'
+			</if>
+			<if test="keyword != '' and keyfield == 'nickname'">
+				m.m_nickname LIKE '%' || #{keyword} || '%'
+			</if>
+			<if test="filter != '' and keyword != ''">
+				and
+			</if>
+			<if test="filter == 'top'">
+				mb_topinfo IS NOT NULL
+			</if>
+			<if test="filter == 'pants'">
+				mb_pantsinfo IS NOT NULL
+			</if>
+			<if test="filter == 'cap'">
+				mb_capinfo IS NOT NULL
+			</if>
+			<if test="filter == 'shoes'">
+				mb_shoesinfo IS NOT NULL
+			</if>			
+		</where>
+		ORDER BY b.mb_num DESC) a
+		)<![CDATA[ WHERE rnum >= #{start} AND rnum <= #{end} ]]>
+	</select>
+</mapper>

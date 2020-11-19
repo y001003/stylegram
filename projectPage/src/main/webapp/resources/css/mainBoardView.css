@@ -1,0 +1,94 @@
+@CHARSET "UTF-8"; 
+/*====*/
+
+.flex-viewport img{
+	width: inherit;
+    max-width: 350px;
+}
+.flex-active-slide{
+    margin-left:-50px;
+}
+.flex-control-nav.flex-control-thumbs{
+    margin-left: -50px;
+}
+.flex-control-nav.flex-control-thumbs li{
+    display:inline;
+}
+.flex-control-nav.flex-control-thumbs li img{
+    width:100px;
+    height:100px;
+}
+.flex-nav-prev{
+    position: static;
+    margin-right: 20%;
+    /* margin-left: -45%; */
+    /* transform: translate(-300px, 0px	); */
+}
+.flex-nav-next{
+    position: static;
+    /* margin-right: 10%; */
+}
+.flex-direction-nav{
+    position: static;
+    margin-left: -50px;
+    margin-right: 60px;
+}
+.flex-pauseplay{
+    padding-top:3px;
+    margin-bottom: 50px;
+    margin-left: -20px;
+    margin-right:30px;
+}
+.top{
+    margin-right:-10px;
+    margin-bottom:-5px;
+}
+.pants{
+    margin-right:-20px;
+    margin-bottom:-10px;
+    margin-left:30px;
+}
+.cap{
+    margin-right:-15px;
+    margin-bottom:-10px;
+    margin-left:30px;
+}
+.shoes{
+    margin-right:-15px;
+    margin-bottom:-10px;
+    margin-left:30px;
+}
+#deletePicture{
+    width:30px;
+    transform:translate(300px,-270px);
+}
+#addimg{
+    height:300px;
+    width:300px;
+}
+#add_pictures{
+
+}
+#uploadPictures{
+	margin: 10 21% 10 24%;
+	width: 30%;
+}
+.replies{
+    padding: 5px;
+}
+.mb_content{
+    margin:50 auto;
+    padding: 30px;
+}
+#pop {
+	position: fixed;
+}
+/* div#main_body div#body {
+    position: absolute;
+    margin-top: 150px;
+    width: 68%;
+    background-color: rgb(247, 248, 249);
+
+    padding: 5% 5% 5% 5%;
+    border-radius: 8px;
+} */
