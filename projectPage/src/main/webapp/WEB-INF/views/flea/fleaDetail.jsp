@@ -133,6 +133,7 @@
 	
 	<!-- 본문 내용 -->
 	<p class="fb_content">
+		가격 : ${flea.fb_price},
 		${flea.fb_content}
 	</p>
 	<hr size="1" width="100%">

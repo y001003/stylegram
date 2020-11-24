@@ -9,7 +9,7 @@ import kr.spring.mainboardlikes.domain.MainBoardLikeVO;
 public interface MainBoardLikeMapper {
 	@Select("SELECT COUNT(*) FROM prolikes WHERE mb_num = #{mb_num} and m_num = #{m_num}")
 	public int likeCheck(MainBoardLikeVO likeVO);
-	@Insert("INSERT INTO prolikes VALUES (#{mb_num}, #{m_num})")
+	@Insert("INSERT INTO prolikes (mb_num, m_num) VALUES (#{mb_num}, #{m_num})")
 	public void likes(MainBoardLikeVO likeVO);
 	@Delete("DELETE FROM prolikes WHERE mb_num = #{mb_num} AND m_num = #{m_num}")
 	public void unlikes(MainBoardLikeVO likeVO);
